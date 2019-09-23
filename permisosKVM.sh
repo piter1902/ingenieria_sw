@@ -4,7 +4,7 @@
 # Hay que dar permisos de ejecucion al 'fichero'/'dispositivo' /dev/kvm
 
 target='/dev/kvm'
-mask='0755'
+mask='0777'
 
 if [ $(id -u) -ne 0 ]; then
 	# Necesitas permisos de administrador
@@ -13,6 +13,7 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 chmod $mask $target
+chown $LOGNAME $target
 if [ $? -eq 0 ]; then
 	# Todo ha ido bien
 	echo 'Todo ha ido bien'
