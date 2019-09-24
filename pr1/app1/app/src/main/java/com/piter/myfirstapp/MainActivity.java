@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,9 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View v){
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText et = findViewById(R.id.edit_message);
+        EditText et = (EditText) findViewById(R.id.edit_message);
         String message = et.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
+        android.util.Log.d("TAG", message);
         startActivity(intent);
     }
 }
