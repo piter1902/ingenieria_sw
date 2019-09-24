@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.piter.myfirstapp.MESSAGE";
 
-    public void sendMessage(View v){
+    public void sendMessage(View v) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText et = (EditText) findViewById(R.id.edit_message);
         String message = et.getText().toString();
