@@ -26,17 +26,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToRadio(View view){
+    public void goToRadio(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.button1:
-                intent.putExtra(EXTRA_MESSAGE, ((RadioButton)view).getText().toString());
+                intent.putExtra(EXTRA_MESSAGE, ((EditText) findViewById(R.id.et_op1)).getText().toString());
+                android.util.Log.d("TAG", ((EditText) findViewById(R.id.et_op1)).getText().toString());
                 break;
             case R.id.button2:
-                intent.putExtra(EXTRA_MESSAGE, ((RadioButton)view).getText().toString());
+                intent.putExtra(EXTRA_MESSAGE, ((EditText) findViewById(R.id.et_op2)).getText().toString());
                 break;
             case R.id.button3:
-                intent.putExtra(EXTRA_MESSAGE, ((RadioButton)view).getText().toString());
+                intent.putExtra(EXTRA_MESSAGE, ((EditText) findViewById(R.id.et_op3)).getText().toString());
                 break;
         }
         //android.util.Log.d("TAG", message);

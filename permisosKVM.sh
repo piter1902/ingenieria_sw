@@ -8,7 +8,7 @@ mask='0777'
 
 if [ $(id -u) -ne 0 ]; then
 	# Necesitas permisos de administrador
-	echo 'Necesitas permisos de administrador (ejecutar con sudo)' &>2
+	echo 'Necesitas permisos de administrador (ejecutar con sudo)' >&2
 	exit 1
 fi
 
@@ -20,6 +20,6 @@ if [ $? -eq 0 ]; then
 	echo 'Mucha suerte programando :D'
 	exit 0
 else
-	echo 'Ha habido algun problema, contacte con su administrador favorito.' &>2
+	echo 'Ha habido algun problema, contacte con su administrador favorito.' >&2
 	exit 2
 fi
