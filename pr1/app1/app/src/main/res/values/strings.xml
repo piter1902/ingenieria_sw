@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">My first App</string>
-    <string name="button_send">Send</string>
-    <string name="edit_message">Escribe algo aqui</string>
-    <string name="title_activity_display_message">DisplayMessageActivity</string>
-</resources>
