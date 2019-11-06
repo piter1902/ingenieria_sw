@@ -1,9 +1,12 @@
 package es.unizar.eina.notepadv1;
 
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 public class Notepadv1 extends AppCompatActivity {
 
@@ -23,7 +26,7 @@ public class Notepadv1 extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepadv1);
-        mDbHelper = new NotetsDbAdapter(this);
+        mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
         mList = (ListView) findViewById(R.id.list);
         fillData();

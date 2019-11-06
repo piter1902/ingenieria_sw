@@ -15,8 +15,8 @@ import android.widget.SimpleCursorAdapter;
 
 public class Notepadv2 extends AppCompatActivity {
 
-    private static final int ACTIVITY_CREATE=0;
-    private static final int ACTIVITY_EDIT=1;
+    private static final int ACTIVITY_CREATE = 0;
+    private static final int ACTIVITY_EDIT = 1;
 
     private static final int INSERT_ID = Menu.FIRST;
     private static final int DELETE_ID = Menu.FIRST + 1;
@@ -27,7 +27,9 @@ public class Notepadv2 extends AppCompatActivity {
     private ListView mList;
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -36,8 +38,9 @@ public class Notepadv2 extends AppCompatActivity {
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
-        mList = (ListView)findViewById(R.id.list);
+        mList = (ListView) findViewById(R.id.list);
         fillData();
+        registerForContextMenu(mList);
     }
 
     private void fillData() {
@@ -46,10 +49,10 @@ public class Notepadv2 extends AppCompatActivity {
         startManagingCursor(mNotesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[] { NotesDbAdapter.KEY_TITLE };
+        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[]{R.id.text1};
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
@@ -80,34 +83,67 @@ public class Notepadv2 extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-
-        // TODO: fill in rest of method
+        menu.add(Menu.NONE, DELETE_ID, Menu.NONE, R.string.menu_delete);
+        menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.menu_edit)
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case DELETE_ID:
+                AdapterView.AdapterContextMenuInfo info =
+                        (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                mDbHelper.deleteNote(info.id);
+                fillData();
+                return true;
+            case EDIT_ID:
+                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                editNote(info.position, info.id);
+                return true;
+        }
         return super.onContextItemSelected(item);
-
-        // TODO: fill in rest of method
     }
 
     private void createNote() {
-        // TODO: fill in implementation
-
+        Intent i = new Intent(this, NoteEdit.class);
+        startActivityForResult(i, ACTIVITY_CREATE);
     }
 
     private void editNote(int position, long id) {
-        // TODO: fill in implementation
-
-     }
+        Cursor c = mNotesCursor;
+        c.moveToPosition(position);
+        Intent i = new Intent(this, NoteEdit.class);
+        i.putExtra(NotesDbAdapter.KEY_ROWID, id);
+        i.putExtra(NotesDbAdapter.KEY_TITLE, c.getString(
+                c.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE)));
+        i.putExtra(NotesDbAdapter.KEY_BODY, c.getString(
+                c.getColumnIndexOrThrow(NotesDbAdapter.KEY_BODY)));
+        startActivityForResult(i, ACTIVITY_EDIT);
+    }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
         super.onActivityResult(requestCode, resultCode, intent);
-
-        // TODO: fill in rest of method
-
+        Bundle extras = intent.getExtras();
+        switch (requestCode) {
+            case ACTIVITY_CREATE:
+                String title = extras.getString(NotesDbAdapter.KEY_TITLE);
+                String body = extras.getString(NotesDbAdapter.KEY_BODY);
+                mDbHelper.createNote(title, body);
+                fillData();
+                break;
+            case ACTIVITY_EDIT:
+                Long mRowId = extras.getLong(NotesDbAdapter.KEY_ROWID);
+                if (mRowId != null) {
+                    String editTitle = extras.getString(NotesDbAdapter.KEY_TITLE);
+                    String editBody = extras.getString(NotesDbAdapter.KEY_BODY);
+                    mDbHelper.updateNote(mRowId, editTitle, editBody);
+                }
+                fillData();
+                break;
+        }
     }
 
 
