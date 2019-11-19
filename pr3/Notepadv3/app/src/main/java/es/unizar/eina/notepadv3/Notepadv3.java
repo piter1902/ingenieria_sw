@@ -23,7 +23,6 @@ public class Notepadv3 extends AppCompatActivity {
     private static final int EDIT_ID = Menu.FIRST + 2;
 
     private NotesDbAdapter mDbHelper;
-    private Cursor mNotesCursor;
     private ListView mList;
 
 
@@ -45,8 +44,8 @@ public class Notepadv3 extends AppCompatActivity {
 
     private void fillData() {
         // Get all of the notes from the database and create the item list
-        mNotesCursor = mDbHelper.fetchAllNotes();
-        startManagingCursor(mNotesCursor);
+        Cursor notesCursor = mDbHelper.fetchAllNotes();
+        startManagingCursor(notesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
         String[] from = new String[] { NotesDbAdapter.KEY_TITLE };
@@ -56,7 +55,7 @@ public class Notepadv3 extends AppCompatActivity {
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, mNotesCursor, from, to);
+                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
         mList.setAdapter(notes);
     }
 
@@ -109,14 +108,8 @@ public class Notepadv3 extends AppCompatActivity {
 
 
     protected void editNote(int position, long id) {
-        Cursor c = mNotesCursor;
-        c.moveToPosition(position);
         Intent i = new Intent(this, NoteEdit.class);
         i.putExtra(NotesDbAdapter.KEY_ROWID, id);
-        i.putExtra(NotesDbAdapter.KEY_TITLE, c.getString(
-                c.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE)));
-        i.putExtra(NotesDbAdapter.KEY_BODY, c.getString(
-                c.getColumnIndexOrThrow(NotesDbAdapter.KEY_BODY)));
         startActivityForResult(i, ACTIVITY_EDIT);
     }
 
@@ -124,24 +117,7 @@ public class Notepadv3 extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        Bundle extras = intent.getExtras();
-        switch(requestCode) {
-            case ACTIVITY_CREATE:
-                String title = extras.getString(NotesDbAdapter.KEY_TITLE);
-                String body = extras.getString(NotesDbAdapter.KEY_BODY);
-                mDbHelper.createNote(title, body);
-                fillData();
-                break;
-            case ACTIVITY_EDIT:
-                Long rowId = extras.getLong(NotesDbAdapter.KEY_ROWID);
-                if (rowId != null) {
-                    String editTitle = extras.getString(NotesDbAdapter.KEY_TITLE);
-                    String editBody = extras.getString(NotesDbAdapter.KEY_BODY);
-                    mDbHelper.updateNote(rowId, editTitle, editBody);
-                }
-                fillData();
-                break;
-        }
+        fillData();
     }
 
 }

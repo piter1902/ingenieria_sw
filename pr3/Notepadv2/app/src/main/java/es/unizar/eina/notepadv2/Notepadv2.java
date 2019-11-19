@@ -15,8 +15,8 @@ import android.widget.SimpleCursorAdapter;
 
 public class Notepadv2 extends AppCompatActivity {
 
-    private static final int ACTIVITY_CREATE = 0;
-    private static final int ACTIVITY_EDIT = 1;
+    private static final int ACTIVITY_CREATE=0;
+    private static final int ACTIVITY_EDIT=1;
 
     private static final int INSERT_ID = Menu.FIRST;
     private static final int DELETE_ID = Menu.FIRST + 1;
@@ -27,9 +27,7 @@ public class Notepadv2 extends AppCompatActivity {
     private ListView mList;
 
 
-    /**
-     * Called when the activity is first created.
-     */
+    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -38,7 +36,7 @@ public class Notepadv2 extends AppCompatActivity {
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
-        mList = (ListView) findViewById(R.id.list);
+        mList = (ListView)findViewById(R.id.list);
         fillData();
         registerForContextMenu(mList);
     }
@@ -49,10 +47,10 @@ public class Notepadv2 extends AppCompatActivity {
         startManagingCursor(mNotesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
+        String[] from = new String[] { NotesDbAdapter.KEY_TITLE };
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[]{R.id.text1};
+        int[] to = new int[] { R.id.text1 };
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
@@ -84,12 +82,12 @@ public class Notepadv2 extends AppCompatActivity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(Menu.NONE, DELETE_ID, Menu.NONE, R.string.menu_delete);
-        menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.menu_edit)
+        menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.menu_edit);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+        switch(item.getItemId()) {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -102,6 +100,7 @@ public class Notepadv2 extends AppCompatActivity {
                 return true;
         }
         return super.onContextItemSelected(item);
+
     }
 
     private void createNote() {
@@ -121,13 +120,11 @@ public class Notepadv2 extends AppCompatActivity {
         startActivityForResult(i, ACTIVITY_EDIT);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
         super.onActivityResult(requestCode, resultCode, intent);
         Bundle extras = intent.getExtras();
-        switch (requestCode) {
+        switch(requestCode) {
             case ACTIVITY_CREATE:
                 String title = extras.getString(NotesDbAdapter.KEY_TITLE);
                 String body = extras.getString(NotesDbAdapter.KEY_BODY);
@@ -144,6 +141,7 @@ public class Notepadv2 extends AppCompatActivity {
                 fillData();
                 break;
         }
+
     }
 
 
