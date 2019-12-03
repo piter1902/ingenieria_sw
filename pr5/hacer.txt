@@ -1,0 +1,10 @@
+Tareas por hacer de la practica 5 de Ingenieria Sw
+
+- Ampliar tabla de requisitos.
+
+- Detallar mas el nuevo diagrama de creacion de nota
+
+- Reflejar los nuevos casos de uso
+- Construir clases e interfaces que aparecen en el patron Bridge. Nuevo Diagrama de clases.
+- Ampliar el diagrama de despliegue con los nodos servidor de correo y central de proveedor de telefonía. 
+- Nuevo diagrama de secuencia con el mecanismo de envio de notas que hemos implementado.
