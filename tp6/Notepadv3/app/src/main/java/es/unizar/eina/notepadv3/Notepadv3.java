@@ -3,6 +3,7 @@ package es.unizar.eina.notepadv3;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,11 +21,13 @@ public class Notepadv3 extends AppCompatActivity {
 
     private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
+    private static final int ACTIVITY_EDIT_CATEGORY=2;
 
     private static final int INSERT_ID = Menu.FIRST;
     private static final int DELETE_ID = Menu.FIRST + 1;
     private static final int EDIT_ID = Menu.FIRST + 2;
     private static final int SEND_NOTE_ID= Menu.FIRST + 3;
+    private static final int EDIT_CATEGORY_ID= Menu.FIRST + 4;
 
     private NotesDbAdapter mDbHelper;
     private ListView mList;
@@ -68,6 +71,7 @@ public class Notepadv3 extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(Menu.NONE, INSERT_ID, Menu.NONE, R.string.menu_insert);
+        menu.add(Menu.NONE, EDIT_CATEGORY_ID, Menu.NONE, R.string.menu_edit_all_categories);
         return result;
     }
 
@@ -76,6 +80,9 @@ public class Notepadv3 extends AppCompatActivity {
         switch (item.getItemId()) {
             case INSERT_ID:
                 createNote();
+                return true;
+            case EDIT_CATEGORY_ID:
+                editCategory();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -125,6 +132,10 @@ public class Notepadv3 extends AppCompatActivity {
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 
+    private void editCategory(){
+        Intent i = new Intent(this, CategoryEdit.class );
+        startActivityForResult(i, ACTIVITY_EDIT_CATEGORY);
+    }
 
     protected void editNote(int position, long id) {
         Intent i = new Intent(this, NoteEdit.class);
