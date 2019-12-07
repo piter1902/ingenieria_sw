@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class NoteEdit extends AppCompatActivity {
 
+    private EditText mIdText;
     private EditText mTitleText;
     private EditText mBodyText;
     private Long mRowId;
@@ -25,6 +28,7 @@ public class NoteEdit extends AppCompatActivity {
 
         mTitleText = (EditText) findViewById(R.id.title);
         mBodyText = (EditText) findViewById(R.id.body);
+        mIdText = (EditText) findViewById(R.id.id);
 
         Button confirmButton = (Button) findViewById(R.id.confirm);
 
@@ -41,8 +45,13 @@ public class NoteEdit extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                setResult(RESULT_OK);
-                finish();
+                if (mTitleText.getText().toString().trim().equals("")) {
+                    Toast.makeText(NoteEdit.this, "El texto no puede ser la cadena vacía", Toast.LENGTH_SHORT).show();
+                } else {
+                    setResult(RESULT_OK);
+                    finish();
+                }
+
             }
 
         });
@@ -56,10 +65,15 @@ public class NoteEdit extends AppCompatActivity {
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE)));
             mBodyText.setText(note.getString(
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_BODY)));
+            mIdText.setText(note.getString(
+                    note.getColumnIndexOrThrow(NotesDbAdapter.KEY_ROWID)));
+        } else { //En caso de que sea nulo, es que se está creando la nota.
+            mIdText.setText("***");
         }
     }
 
     private void saveState() {
+
         String title = mTitleText.getText().toString();
         String body = mBodyText.getText().toString();
         if (mRowId == null) {
@@ -78,11 +92,17 @@ public class NoteEdit extends AppCompatActivity {
         saveState();
         outState.putSerializable(NotesDbAdapter.KEY_ROWID, mRowId);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
-        saveState();
+        if (!mTitleText.getText().toString().trim().equals("")) {
+            saveState();
+        }else{
+            Toast.makeText(NoteEdit.this, "Nota vacía", Toast.LENGTH_SHORT).show();
+        }
     }
+
     @Override
     protected void onResume() {
         super.onResume();

@@ -5,9 +5,11 @@
     <string name="menu_insert">Add Item</string>
     <string name="menu_delete">Delete Note</string>
     <string name="menu_edit">Edit Note</string>
+    <string name="menu_share_note">Share note</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="confirm">Confirm</string>
     <string name="edit_note">Edit Note</string>
     <string name="title_activity_note_edit">EditNote</string>
+    <string name="id">ID</string>
 </resources>

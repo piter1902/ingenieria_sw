@@ -12,6 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import es.unizar.eina.send.MailImplementor;
+import es.unizar.eina.send.SendAbstractionImpl;
+
 
 public class Notepadv3 extends AppCompatActivity {
 
@@ -21,6 +24,7 @@ public class Notepadv3 extends AppCompatActivity {
     private static final int INSERT_ID = Menu.FIRST;
     private static final int DELETE_ID = Menu.FIRST + 1;
     private static final int EDIT_ID = Menu.FIRST + 2;
+    private static final int SEND_NOTE_ID= Menu.FIRST + 3;
 
     private NotesDbAdapter mDbHelper;
     private ListView mList;
@@ -83,6 +87,7 @@ public class Notepadv3 extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add(Menu.NONE, DELETE_ID, Menu.NONE, R.string.menu_delete);
         menu.add(Menu.NONE, EDIT_ID, Menu.NONE, R.string.menu_edit);
+        menu.add(Menu.NONE, SEND_NOTE_ID, Menu.NONE, R.string.menu_share_note);
     }
 
     @Override
@@ -97,6 +102,20 @@ public class Notepadv3 extends AppCompatActivity {
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 editNote(info.position, info.id);
                 return true;
+            case SEND_NOTE_ID:
+                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Cursor note = mDbHelper.fetchNote(info.id);
+                String title = note.getString(
+                        note.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE));
+                String body = note.getString(
+                        note.getColumnIndexOrThrow(NotesDbAdapter.KEY_BODY));
+                String metodo = null;
+                if(body.length()<100){
+                    metodo = "SMS";
+                }else{
+                    metodo = "CORREO";
+                }
+                new SendAbstractionImpl(this, metodo).send(title,body);
         }
         return super.onContextItemSelected(item);
     }
