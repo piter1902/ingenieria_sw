@@ -24,6 +24,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Notepadv3" />
         </activity>
+        <activity
+            android:name="es.unizar.eina.notepadv3.CategoryEdit"
+            android:label="@string/title_category_edit"
+            android:parentActivityName=".Notepadv3" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Notepadv3" />
+        </activity>
+        <activity
+            android:name="es.unizar.eina.notepadv3.CategoryCreate"
+            android:label="@string/title_category_create"
+            android:parentActivityName=".Notepadv3" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Notepadv3" />
+        </activity>
     </application>
 
 </manifest>

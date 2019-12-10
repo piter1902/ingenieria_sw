@@ -31,6 +31,8 @@ public class CategoryEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("POLLA","AQUI LLEGO");
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.category_edit);
+        Log.d("POLLA","AQUI LLEGO");
         mDbHelper = new CategoryDbAdapter(this);
         mDbHelper.open();
         mList = (ListView)findViewById(R.id.listCategory);

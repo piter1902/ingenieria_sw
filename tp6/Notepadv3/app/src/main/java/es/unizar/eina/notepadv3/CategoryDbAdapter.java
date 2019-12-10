@@ -29,7 +29,7 @@ public class CategoryDbAdapter {
      * Database creation sql statement
      */
     private static final String DATABASE_CREATE =
-            "create table categories (_id integer primary key autoincrement, "
+            "create table category (_id integer primary key autoincrement, "
                     + "title text not null unique);";
 
 
