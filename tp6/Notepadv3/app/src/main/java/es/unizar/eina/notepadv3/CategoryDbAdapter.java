@@ -154,11 +154,10 @@ public class CategoryDbAdapter {
      */
     public boolean exists_category(String title){
         Cursor mCursor =
-
                 mDb.query(true, DATABASE_TABLE, new String[]{
                                 KEY_ROWID, KEY_TITLE}, KEY_TITLE + "="  + '"' + title + '"', null,
                         null, null, null, null);
-        return  mCursor != null;
+        return  mCursor.getCount() != 0;
     }
     /**
      * Update the note using the details provided. The note to be updated is
