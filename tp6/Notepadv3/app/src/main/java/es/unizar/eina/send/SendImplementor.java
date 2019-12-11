@@ -9,7 +9,7 @@ import android.app.Activity;
  */
 public interface SendImplementor {
 	   
-   /**  Actualiza la actividad desde la cual se abrira la actividad de envio de notas */
+   /**  Actualiza la actividad desde la cual se abrira la actividad de envi­o de notas */
    public void setSourceActivity(Activity source);
 
    /**  Recupera la actividad desde la cual se abrira la actividad de envio de notas */

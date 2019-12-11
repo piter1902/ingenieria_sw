@@ -1,5 +1,7 @@
 package es.unizar.eina.notepadv3;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import es.unizar.eina.send.MailImplementor;
 import es.unizar.eina.send.SendAbstractionImpl;
@@ -19,21 +25,25 @@ import es.unizar.eina.send.SendAbstractionImpl;
 
 public class Notepadv3 extends AppCompatActivity {
 
-    private static final int ACTIVITY_CREATE=0;
-    private static final int ACTIVITY_EDIT=1;
-    private static final int ACTIVITY_EDIT_CATEGORY=2;
+    private static final int ACTIVITY_CREATE = 0;
+    private static final int ACTIVITY_EDIT = 1;
+    private static final int ACTIVITY_EDIT_CATEGORY = 2;
 
     private static final int INSERT_ID = Menu.FIRST;
     private static final int DELETE_ID = Menu.FIRST + 1;
     private static final int EDIT_ID = Menu.FIRST + 2;
-    private static final int SEND_NOTE_ID= Menu.FIRST + 3;
-    private static final int EDIT_CATEGORY_ID= Menu.FIRST + 4;
+    private static final int SEND_NOTE_ID = Menu.FIRST + 3;
+    private static final int EDIT_CATEGORY_ID = Menu.FIRST + 4;
+    private static final int FILTER_NOTE = Menu.FIRST + 5;
 
     private NotesDbAdapter mDbHelper;
+    private CategoryDbAdapter cDHelper;
     private ListView mList;
 
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -42,7 +52,9 @@ public class Notepadv3 extends AppCompatActivity {
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
-        mList = (ListView)findViewById(R.id.list);
+        cDHelper = new CategoryDbAdapter(this);
+        cDHelper.open();
+        mList = (ListView) findViewById(R.id.list);
         fillData();
 
         registerForContextMenu(mList);
@@ -55,10 +67,10 @@ public class Notepadv3 extends AppCompatActivity {
         startManagingCursor(notesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[] { NotesDbAdapter.KEY_TITLE };
+        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[] { R.id.text1 };
+        int[] to = new int[]{R.id.text1};
 
         // Now create an array adapter and set it to display using our row
         SimpleCursorAdapter notes =
@@ -72,6 +84,7 @@ public class Notepadv3 extends AppCompatActivity {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(Menu.NONE, INSERT_ID, Menu.NONE, R.string.menu_insert);
         menu.add(Menu.NONE, EDIT_CATEGORY_ID, Menu.NONE, R.string.menu_edit_all_categories);
+        menu.add(Menu.NONE, FILTER_NOTE, Menu.NONE, R.string.menu_filter_notes);
         return result;
     }
 
@@ -84,6 +97,11 @@ public class Notepadv3 extends AppCompatActivity {
             case EDIT_CATEGORY_ID:
                 editCategory();
                 return true;
+            case FILTER_NOTE:
+                filterNotes();
+                return true;
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -99,7 +117,7 @@ public class Notepadv3 extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 mDbHelper.deleteNote(info.id);
@@ -117,12 +135,12 @@ public class Notepadv3 extends AppCompatActivity {
                 String body = note.getString(
                         note.getColumnIndexOrThrow(NotesDbAdapter.KEY_BODY));
                 String metodo = null;
-                if(body.length()<100){
+                if (body.length() < 100) {
                     metodo = "SMS";
-                }else{
+                } else {
                     metodo = "CORREO";
                 }
-                new SendAbstractionImpl(this, metodo).send(title,body);
+                new SendAbstractionImpl(this, metodo).send(title, body);
         }
         return super.onContextItemSelected(item);
     }
@@ -132,9 +150,42 @@ public class Notepadv3 extends AppCompatActivity {
         startActivityForResult(i, ACTIVITY_CREATE);
     }
 
-    private void editCategory(){
-        Intent i = new Intent(this, CategoryEdit.class );
+    private void editCategory() {
+        Intent i = new Intent(this, CategoryEdit.class);
         startActivityForResult(i, ACTIVITY_EDIT_CATEGORY);
+    }
+
+    private List<String> fetchCategories() {
+        List<String> lista_cat = new ArrayList<>();
+        Cursor c = cDHelper.fetchAllCategories();
+        while (c.moveToNext()) {
+            lista_cat.add(c.getString(c.getColumnIndexOrThrow(CategoryDbAdapter.KEY_TITLE)));
+        }
+        return lista_cat;
+    }
+
+    private void filterNotes() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        final CharSequence[] items = new CharSequence[3];
+
+        items[0] = "Ordenar alfabéticamente";
+        items[1] = "Ordenar por categoría";
+        items[2] = "Ordenar por quién la tiene mas grande";
+
+        builder.setTitle("Filtrado")
+                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(
+                                Notepadv3.this,
+                                "Seleccionaste: " + items[which],
+                                Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+       
+        builder.create().show();
     }
 
     protected void editNote(int position, long id) {

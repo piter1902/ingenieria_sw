@@ -76,7 +76,6 @@ public class CategoryCreate extends AppCompatActivity {
 
         if (mRowId == null) {
             long id = 0;
-            Log.d("POLLA", String.format("Existe? %s", mDbHelper.exists_category(title)));
             if (!mDbHelper.exists_category(title)) {
                 id = mDbHelper.createCategory(title);
             } else {

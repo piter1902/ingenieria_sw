@@ -75,10 +75,10 @@ public class NoteEdit extends AppCompatActivity {
     }
 
     private void populateFields() {
+        List<String> datos = fetchCategories();
         if (mRowId != null) {
             Cursor note = mDbHelper.fetchNote(mRowId);
             startManagingCursor(note);
-            List<String> datos = fetchCategories();
 
 
             catRowID = note.getLong(note.getColumnIndexOrThrow(NotesDbAdapter.KEY_CATEGORY));
@@ -89,6 +89,7 @@ public class NoteEdit extends AppCompatActivity {
             if (catRowID != null && catRowID > 0) {
                 // La nota tiene categoría -> Reordenamos el array para ponerla en primera posicion
                 Cursor c = cDHelper.fetchCategory(catRowID);
+                // En caso contrario no se hace nada
                 if (c.getCount() != 0) {
                     // Existe la categoria
 //                    c.moveToNext();
@@ -96,7 +97,9 @@ public class NoteEdit extends AppCompatActivity {
                     datos.remove(cat_name);
                     datos.add(0, cat_name);
                 }
-                // En caso contrario no se hace nada
+            } else {
+                // Caso de que nota no tiene categoría. Si queremos que así permanezca, se le tiene que dar la opción.
+                datos.add(0, "");
             }
 
 
@@ -114,6 +117,14 @@ public class NoteEdit extends AppCompatActivity {
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_ROWID)));
         } else { //En caso de que sea nulo, es que se está creando la nota.
             mIdText.setText("***");
+            // Si estamos creando nota, la categoría por defecto va a ser la 0, cuyo title=""
+            datos.add(0, "");
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, datos);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            mSpinner.setAdapter(adapter);
         }
     }
 
@@ -133,7 +144,9 @@ public class NoteEdit extends AppCompatActivity {
         Object cat = mSpinner.getSelectedItem();
         // TODO: introducir categoria 0 como cadena vacia
         long catID = 0;
-        if (cat != null) {
+        // Comprobamos que ha seleccionado categoría
+        if (cat.toString() != "") {
+            Log.d(TAG, "Seleccionado categoría por defecto.");
             catID = cDHelper.getCatID(cat.toString());
         }
 
