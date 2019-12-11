@@ -29,12 +29,12 @@ public class CategoryDbAdapter {
      * Database creation sql statement
      */
     private static final String DATABASE_CREATE =
-            "create table category (_id integer primary key autoincrement, "
+            "create table categories (_id integer primary key autoincrement, "
                     + "title text not null unique);";
 
 
     private static final String DATABASE_NAME = "dataCategory";
-    private static final String DATABASE_TABLE = "category";
+    private static final String DATABASE_TABLE = "categories";
     private static final int DATABASE_VERSION = 2;
 
     private final Context mCtx;
@@ -98,10 +98,10 @@ public class CategoryDbAdapter {
      * @param title the title of the note
      * @return rowId or -1 if failed
      */
-    public long createCategory(String title) {
+    public long createCategory(String title) throws SQLException{
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
-
+        Log.d("POLLA","Creo tabla");
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
@@ -141,7 +141,7 @@ public class CategoryDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[]{
-                                KEY_ROWID, KEY_TITLE}, KEY_ROWID + "=" + rowId, null,
+                                KEY_ROWID, KEY_TITLE}, KEY_ROWID + "="+ rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -149,7 +149,17 @@ public class CategoryDbAdapter {
         return mCursor;
 
     }
+    /**
+     *
+     */
+    public boolean exists_category(String title){
+        Cursor mCursor =
 
+                mDb.query(true, DATABASE_TABLE, new String[]{
+                                KEY_ROWID, KEY_TITLE}, KEY_TITLE + "="  + '"' + title + '"', null,
+                        null, null, null, null);
+        return  mCursor != null;
+    }
     /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
@@ -159,7 +169,7 @@ public class CategoryDbAdapter {
      * @param title value to set note title to
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateCategory(long rowId, String title) {
+    public boolean updateCategory(long rowId, String title) throws SQLException{
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
 

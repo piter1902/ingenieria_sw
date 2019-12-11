@@ -1,20 +1,20 @@
 package es.unizar.eina.notepadv3;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
+        import android.content.Intent;
+        import android.database.Cursor;
+        import android.support.v7.app.AppCompatActivity;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.ContextMenu;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.AdapterView;
+        import android.widget.ListView;
+        import android.widget.SimpleCursorAdapter;
+        import android.widget.Toast;
 
-import es.unizar.eina.send.SendAbstractionImpl;
+        import es.unizar.eina.send.SendAbstractionImpl;
 
 public class CategoryEdit extends AppCompatActivity {
 
@@ -31,8 +31,7 @@ public class CategoryEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("POLLA","AQUI LLEGO");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.category_edit);
-        Log.d("POLLA","AQUI LLEGO");
+        setContentView(R.layout.activity_category_edit );
         mDbHelper = new CategoryDbAdapter(this);
         mDbHelper.open();
         mList = (ListView)findViewById(R.id.listCategory);

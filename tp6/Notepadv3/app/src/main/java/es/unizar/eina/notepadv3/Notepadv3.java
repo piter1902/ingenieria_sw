@@ -134,7 +134,6 @@ public class Notepadv3 extends AppCompatActivity {
 
     private void editCategory(){
         Intent i = new Intent(this, CategoryEdit.class );
-        Log.d("POLLA", "estoy en el intent");
         startActivityForResult(i, ACTIVITY_EDIT_CATEGORY);
     }
 

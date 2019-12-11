@@ -2,6 +2,8 @@ package es.unizar.eina.notepadv3;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +24,10 @@ public class CategoryCreate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mDbHelper = new CategoryDbAdapter(this);
         mDbHelper.open();
-        setContentView(R.layout.category_create);
+        setContentView(R.layout.activity_category_create);
         setTitle(R.string.create_category);
 
-        mTitleText = (EditText) findViewById(R.id.idCategory);
+        mTitleText = (EditText) findViewById(R.id.titleCategory);
         mIdText = (EditText) findViewById(R.id.idCategory);
 
         Button confirmButton = (Button) findViewById(R.id.confirmCategory);
@@ -71,13 +73,23 @@ public class CategoryCreate extends AppCompatActivity {
     private void saveState() {
 
         String title = mTitleText.getText().toString();
+
         if (mRowId == null) {
-            long id = mDbHelper.createCategory(title);
+            long id = 0;
+            if (!mDbHelper.exists_category(title)) {
+                id = mDbHelper.createCategory(title);
+            } else {
+                Toast.makeText(CategoryCreate.this, "Categoría duplicada.", Toast.LENGTH_SHORT).show();
+            }
             if (id > 0) {
                 mRowId = id;
             }
         } else {
-            mDbHelper.updateCategory(mRowId, title);
+            if (!mDbHelper.exists_category(title)) {
+                mDbHelper.updateCategory(mRowId, title);
+            } else {
+                Toast.makeText(CategoryCreate.this, "Categoría duplicada.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -93,7 +105,7 @@ public class CategoryCreate extends AppCompatActivity {
         super.onPause();
         if (!mTitleText.getText().toString().trim().equals("")) {
             saveState();
-        }else{
+        } else {
             Toast.makeText(CategoryCreate.this, "Nota vacía", Toast.LENGTH_SHORT).show();
         }
     }

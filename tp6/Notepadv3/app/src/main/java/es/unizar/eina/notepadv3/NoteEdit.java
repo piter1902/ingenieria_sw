@@ -6,15 +6,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoteEdit extends AppCompatActivity {
 
     private EditText mIdText;
     private EditText mTitleText;
     private EditText mBodyText;
+    private Spinner mSpinner;
     private Long mRowId;
     private NotesDbAdapter mDbHelper;
 
@@ -29,6 +35,7 @@ public class NoteEdit extends AppCompatActivity {
         mTitleText = (EditText) findViewById(R.id.title);
         mBodyText = (EditText) findViewById(R.id.body);
         mIdText = (EditText) findViewById(R.id.id);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
 
         Button confirmButton = (Button) findViewById(R.id.confirm);
 
@@ -51,7 +58,6 @@ public class NoteEdit extends AppCompatActivity {
                     setResult(RESULT_OK);
                     finish();
                 }
-
             }
 
         });
@@ -61,6 +67,15 @@ public class NoteEdit extends AppCompatActivity {
         if (mRowId != null) {
             Cursor note = mDbHelper.fetchNote(mRowId);
             startManagingCursor(note);
+            List<String> datos =  new ArrayList<String>();
+                datos.add("item1");
+                datos.add("item2");
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this, android.R.layout.simple_spinner_item, datos);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            mSpinner.setAdapter(adapter);
             mTitleText.setText(note.getString(
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE)));
             mBodyText.setText(note.getString(
