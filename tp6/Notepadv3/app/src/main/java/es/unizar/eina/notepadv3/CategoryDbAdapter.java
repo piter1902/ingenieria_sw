@@ -39,6 +39,25 @@ public class CategoryDbAdapter {
 
     private final Context mCtx;
 
+    /**
+     * Metodo que devuelve el id asociado a la categoria
+     * @param cat categoria a obtener el ID
+     * @return id de la categoria o -1 si no existe
+     */
+    public long getCatID(String cat) {
+        Cursor c = mDb.query(true, DATABASE_TABLE, new String[]{
+                        KEY_ROWID}, KEY_TITLE + "='" + cat + "'", null,
+                null, null, null, null);
+
+        if(c.getCount() != 0){
+            c.moveToNext();
+            return c.getInt(c.getColumnIndexOrThrow(KEY_ROWID));
+        }else{
+            // Es 0 -> No existe
+            return -1;
+        }
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {
@@ -49,11 +68,12 @@ public class CategoryDbAdapter {
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL(DATABASE_CREATE);
+            // TODO: ejecutar aqui el insert de la categoria 0 con cadena vacia? (sin agrupar)
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+            Log.d(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS categories");
             onCreate(db);
@@ -101,7 +121,7 @@ public class CategoryDbAdapter {
     public long createCategory(String title) throws SQLException{
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
-        Log.d("POLLA","Creo tabla");
+        Log.d(TAG,"Creo tabla");
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 

@@ -43,17 +43,28 @@
     <EditText
         android:id="@+id/body"
         android:layout_width="match_parent"
-        android:layout_height="331dp"
+        android:layout_height="155dp"
+        android:maxLines="5"
         android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category"/>
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="53dp" />
+    </LinearLayout>
 
     <Button android:id="@+id/confirm"
         android:text="@string/confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="53dp" />
 
 </LinearLayout>

@@ -31,7 +31,7 @@ public class SMSImplementor implements SendImplementor {
     }
 
     /**
-     * Implementaci�n del m�todo send utilizando la aplicaci�n de gesti�n de correo de Android
+     * Implementacion del metodo send utilizando la aplicacion de gestion de correo de Android
      * Solo se copia el asunto y el cuerpo
      * @param subject asunto
      * @param body cuerpo del mensaje

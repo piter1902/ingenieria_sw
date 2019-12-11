@@ -23,6 +23,9 @@ public class NotesDbAdapter {
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
     public static final String KEY_ROWID = "_id";
+    // Para la gestion de las categorias
+    public static final String KEY_CATEGORY = "category";
+
 
     private static final String TAG = "NotesDbAdapter";
     private DatabaseHelper mDbHelper;
@@ -33,7 +36,8 @@ public class NotesDbAdapter {
      */
     private static final String DATABASE_CREATE =
             "create table notes (_id integer primary key autoincrement, "
-                    + "title text not null, body text not null);";
+                    + "title text not null, body text not null, category integer,"+
+                    " CONSTRAINT FK_categories foreign key (category) references categories(id));";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "notes";
@@ -105,6 +109,8 @@ public class NotesDbAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
+        // TODO: Establecemos la categoría inicial como la categoria 0 (se insertara al crear la BD de categorias)
+        initialValues.put(KEY_CATEGORY, 0);
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
@@ -130,7 +136,7 @@ public class NotesDbAdapter {
         //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
          //       KEY_BODY}, null, null, null, null, null);
         return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
-                KEY_BODY}, null, null, null, null, KEY_TITLE);
+                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_TITLE);
     }
 
     /**
@@ -145,7 +151,7 @@ public class NotesDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY}, KEY_ROWID + "=" + rowId, null,
+                                KEY_TITLE, KEY_BODY, KEY_CATEGORY}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -162,12 +168,14 @@ public class NotesDbAdapter {
      * @param rowId id of note to update
      * @param title value to set note title to
      * @param body value to set note body to
+     * @param category_id value of id of category which note pertains to.
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateNote(long rowId, String title, String body) {
+    public boolean updateNote(long rowId, String title, String body, long category_id) {
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
         args.put(KEY_BODY, body);
+        args.put(KEY_CATEGORY, category_id);
 
         return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
