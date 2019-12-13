@@ -12,7 +12,7 @@ import android.util.Log;
  * Simple notes database access helper class. Defines the basic CRUD operations
  * for the notepad example, and gives the ability to list all notes as well as
  * retrieve or modify a specific note.
- *
+ * <p>
  * This has been improved from the first version of this tutorial through the
  * addition of better error handling and also using returning a Cursor instead
  * of using a collection of inner classes (which is less scalable and not
@@ -36,7 +36,7 @@ public class NotesDbAdapter {
      */
     private static final String DATABASE_CREATE =
             "create table notes (_id integer primary key autoincrement, "
-                    + "title text not null, body text not null, category integer,"+
+                    + "title text not null, body text not null, category integer," +
                     " CONSTRAINT FK_categories foreign key (category) references categories(id));";
 
     private static final String DATABASE_NAME = "data";
@@ -82,7 +82,7 @@ public class NotesDbAdapter {
      * signal the failure
      *
      * @return this (self reference, allowing this to be chained in an
-     *         initialization call)
+     * initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
     public NotesDbAdapter open() throws SQLException {
@@ -102,7 +102,7 @@ public class NotesDbAdapter {
      * a -1 to indicate failure.
      *
      * @param title the title of the note
-     * @param body the body of the note
+     * @param body  the body of the note
      * @return rowId or -1 if failed
      */
     public long createNote(String title, String body) {
@@ -131,12 +131,28 @@ public class NotesDbAdapter {
      *
      * @return Cursor over all notes
      */
-    public Cursor fetchAllNotes() {
+    public Cursor fetchNotesByName() {
 
         //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
         //       KEY_BODY}, null, null, null, null, null);
-        return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
                 KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_TITLE);
+    }
+
+    public Cursor fetchNotesByCategory(long category) {
+
+        //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
+        //       KEY_BODY}, null, null, null, null, null);
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
+                KEY_BODY, KEY_CATEGORY}, KEY_CATEGORY + "=" + category , null, null, null, null);
+    }
+
+    public Cursor fetchNotesByDate() {
+
+        //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
+        //       KEY_BODY}, null, null, null, null, null);
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
+                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_ROWID);
     }
 
     /**
@@ -150,7 +166,7 @@ public class NotesDbAdapter {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
+                mDb.query(true, DATABASE_TABLE, new String[]{KEY_ROWID,
                                 KEY_TITLE, KEY_BODY, KEY_CATEGORY}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
@@ -165,9 +181,9 @@ public class NotesDbAdapter {
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
      *
-     * @param rowId id of note to update
-     * @param title value to set note title to
-     * @param body value to set note body to
+     * @param rowId       id of note to update
+     * @param title       value to set note title to
+     * @param body        value to set note body to
      * @param category_id value of id of category which note pertains to.
      * @return true if the note was successfully updated, false otherwise
      */

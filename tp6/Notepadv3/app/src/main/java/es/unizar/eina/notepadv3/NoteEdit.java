@@ -142,7 +142,7 @@ public class NoteEdit extends AppCompatActivity {
         String title = mTitleText.getText().toString();
         String body = mBodyText.getText().toString();
         Object cat = mSpinner.getSelectedItem();
-        // TODO: introducir categoria 0 como cadena vacia
+
         long catID = 0;
         // Comprobamos que ha seleccionado categoría
         if (cat.toString() != "") {

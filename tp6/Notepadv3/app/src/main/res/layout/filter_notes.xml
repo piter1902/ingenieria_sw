@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="10dp"
+        android:text="Seleccione categoría"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerFilter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupFilter"
+        app:layout_constraintVertical_bias="0.774" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupFilter"
+        android:layout_width="211dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginBottom="570dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/nameFilter"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:checked="true"
+            android:text="Filtrar por nombre" />
+
+        <RadioButton
+            android:id="@+id/categoryFilter"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:checked="false"
+            android:text="Filtrar por categoría" />
+
+        <RadioButton
+            android:id="@+id/dateFilter"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:checked="false"
+            android:text="Filtrar por fecha de creación" />
+
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spinnerFilter"
+        android:layout_width="232dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupFilter"
+        app:layout_constraintVertical_bias="0.189" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginBottom="16dp"
+        android:text="Seleccione tipo de filtrado"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupFilter"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,7 +1,10 @@
 package es.unizar.eina.notepadv3;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+//import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,14 +19,10 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import es.unizar.eina.send.MailImplementor;
 import es.unizar.eina.send.SendAbstractionImpl;
 
 
-public class Notepadv3 extends AppCompatActivity {
+public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment.NoticeDialogListener {
 
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_EDIT = 1;
@@ -37,8 +36,9 @@ public class Notepadv3 extends AppCompatActivity {
     private static final int FILTER_NOTE = Menu.FIRST + 5;
 
     private NotesDbAdapter mDbHelper;
-    private CategoryDbAdapter cDHelper;
     private ListView mList;
+    private String actualQuery;
+    private long actualCategory;
 
 
     /**
@@ -52,18 +52,33 @@ public class Notepadv3 extends AppCompatActivity {
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
-        cDHelper = new CategoryDbAdapter(this);
-        cDHelper.open();
         mList = (ListView) findViewById(R.id.list);
-        fillData();
+        // En un primer momento, las notas se muestran organizadas por nombre
+        if(actualQuery == null || actualQuery.trim().equals(""))
+            actualQuery = "nameFilter";
+        fillData(actualQuery,actualCategory);
 
         registerForContextMenu(mList);
 
     }
 
-    private void fillData() {
+    private void fillData(String query, long category) {
         // Get all of the notes from the database and create the item list
-        Cursor notesCursor = mDbHelper.fetchAllNotes();
+        actualQuery = query;
+        actualCategory = category;
+        Cursor notesCursor = null;
+        switch (query) {
+            case "nameFilter":
+                notesCursor = mDbHelper.fetchNotesByName();
+                break;
+            case "dateFilter":
+                notesCursor = mDbHelper.fetchNotesByDate();
+                break;
+            case "categoryFilter":
+
+                notesCursor = mDbHelper.fetchNotesByCategory(category);
+        }
+
         startManagingCursor(notesCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
@@ -121,7 +136,7 @@ public class Notepadv3 extends AppCompatActivity {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 mDbHelper.deleteNote(info.id);
-                fillData();
+                fillData(actualQuery,actualCategory);
                 return true;
             case EDIT_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -155,37 +170,13 @@ public class Notepadv3 extends AppCompatActivity {
         startActivityForResult(i, ACTIVITY_EDIT_CATEGORY);
     }
 
-    private List<String> fetchCategories() {
-        List<String> lista_cat = new ArrayList<>();
-        Cursor c = cDHelper.fetchAllCategories();
-        while (c.moveToNext()) {
-            lista_cat.add(c.getString(c.getColumnIndexOrThrow(CategoryDbAdapter.KEY_TITLE)));
-        }
-        return lista_cat;
-    }
 
     private void filterNotes() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new NoticeDialogFragment();
+        FragmentManager prueba = getSupportFragmentManager();
+        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
 
-        final CharSequence[] items = new CharSequence[3];
-
-        items[0] = "Ordenar alfabéticamente";
-        items[1] = "Ordenar por categoría";
-        items[2] = "Ordenar por quién la tiene mas grande";
-
-        builder.setTitle("Filtrado")
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(
-                                Notepadv3.this,
-                                "Seleccionaste: " + items[which],
-                                Toast.LENGTH_SHORT)
-                                .show();
-                    }
-                });
-       
-        builder.create().show();
     }
 
     protected void editNote(int position, long id) {
@@ -198,7 +189,35 @@ public class Notepadv3 extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        fillData();
+        fillData(actualQuery, actualCategory);
     }
 
+    /**
+     * Método que conecta la actividad con el diálogo. Se activa cuando es seleccionado el botón de filtrar
+     *
+     * @param dialog   diálogo del que proviene
+     * @param query    cadena que indica cómo se van a mostrar las notas en pantalla
+     * @param category categoría según la que filtraremos notas. Si no se ha seleccionado
+     *                 filtrado por categoría, su valor es NULL
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog, String query, long category) {
+        fillData(query,category);
+    }
+
+
+    /**
+     * Método que conecta la actividad con el diálogo. Se activa cuando es seleccionado el botón de cancelar
+     *
+     * @param dialog
+     */
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
+        Toast.makeText(
+                this,
+                "Seleccionado botón OFFF",
+                Toast.LENGTH_SHORT)
+                .show();
+    }
 }
