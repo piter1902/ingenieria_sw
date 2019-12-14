@@ -151,7 +151,7 @@ public class NoteEdit extends AppCompatActivity {
         }
 
         if (mRowId == null) {
-            long id = mDbHelper.createNote(title, body);
+            long id = mDbHelper.createNote(title, body, catID);
             if (id > 0) {
                 mRowId = id;
             }

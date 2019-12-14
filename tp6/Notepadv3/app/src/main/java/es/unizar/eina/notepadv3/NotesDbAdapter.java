@@ -105,12 +105,12 @@ public class NotesDbAdapter {
      * @param body  the body of the note
      * @return rowId or -1 if failed
      */
-    public long createNote(String title, String body) {
+    public long createNote(String title, String body, long category) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
         // TODO: Establecemos la categoría inicial como la categoria 0 (se insertara al crear la BD de categorias)
-        initialValues.put(KEY_CATEGORY, 0);
+        initialValues.put(KEY_CATEGORY, category);
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
