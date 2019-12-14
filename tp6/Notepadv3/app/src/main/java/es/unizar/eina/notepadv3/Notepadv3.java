@@ -153,7 +153,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 if (body.length() < 100) {
                     metodo = "SMS";
                 } else {
-                    metodo = "CORREO";
+                    metodo = "MAIL";
                 }
                 new SendAbstractionImpl(this, metodo).send(title, body);
         }

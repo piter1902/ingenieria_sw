@@ -103,6 +103,7 @@ public class NotesDbAdapter {
      *
      * @param title the title of the note
      * @param body  the body of the note
+     * @param category id of the category which note pertains to.
      * @return rowId or -1 if failed
      */
     public long createNote(String title, String body, long category) {

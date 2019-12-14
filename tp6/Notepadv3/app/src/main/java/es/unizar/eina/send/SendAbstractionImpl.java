@@ -9,7 +9,7 @@ public class SendAbstractionImpl implements SendAbstraction {
 	private SendImplementor implementor;
 	
 	/** Constructor de la clase. Inicializa el objeto delegado
-	 * @param sourceActiviy actividad desde la cual se abrira la actividad encargada de enviar la nota
+	 * @param sourceActivity actividad desde la cual se abrira la actividad encargada de enviar la nota
 	 * @param method parametro potencialmente utilizable para instanciar el objeto delegado
 	 */
 	public SendAbstractionImpl(Activity sourceActivity, String method) {
