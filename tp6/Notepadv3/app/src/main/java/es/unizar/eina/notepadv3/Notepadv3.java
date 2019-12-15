@@ -54,9 +54,9 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
         mDbHelper.open();
         mList = (ListView) findViewById(R.id.list);
         // En un primer momento, las notas se muestran organizadas por nombre
-        if(actualQuery == null || actualQuery.trim().equals(""))
+        if (actualQuery == null || actualQuery.trim().equals(""))
             actualQuery = "nameFilter";
-        fillData(actualQuery,actualCategory);
+        fillData(actualQuery, actualCategory);
 
         registerForContextMenu(mList);
 
@@ -136,7 +136,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 mDbHelper.deleteNote(info.id);
-                fillData(actualQuery,actualCategory);
+                fillData(actualQuery, actualCategory);
                 return true;
             case EDIT_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -202,7 +202,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
      */
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, String query, long category) {
-        fillData(query,category);
+        fillData(query, category);
     }
 
 
