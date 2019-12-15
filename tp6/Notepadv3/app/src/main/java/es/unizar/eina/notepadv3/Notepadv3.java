@@ -75,8 +75,11 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 notesCursor = mDbHelper.fetchNotesByDate();
                 break;
             case "categoryFilter":
-
                 notesCursor = mDbHelper.fetchNotesByCategory(category);
+                break;
+            case "allNotesGroupByCategory":
+                notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
+                break;
         }
 
         startManagingCursor(notesCursor);

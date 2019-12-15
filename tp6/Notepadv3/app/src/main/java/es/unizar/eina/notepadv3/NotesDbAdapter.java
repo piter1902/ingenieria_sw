@@ -45,6 +45,10 @@ public class NotesDbAdapter {
 
     private final Context mCtx;
 
+    public Cursor fetchAllNotesGroupByCategory() {
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE, KEY_BODY, KEY_CATEGORY}, null, null, KEY_CATEGORY, null, null);
+    }
+
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {

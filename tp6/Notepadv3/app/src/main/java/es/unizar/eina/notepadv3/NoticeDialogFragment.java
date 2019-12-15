@@ -79,6 +79,7 @@ public class NoticeDialogFragment extends DialogFragment {
         final RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.radioGroupFilter);
         final RadioButton nameFilter = (RadioButton) v.findViewById(R.id.nameFilter);
         final RadioButton dateFilter = (RadioButton) v.findViewById(R.id.dateFilter);
+        final RadioButton notesGroupedByCat = (RadioButton) v.findViewById(R.id.notesGroupedByCat);
         final RadioButton categoryFilter = (RadioButton) v.findViewById(R.id.categoryFilter);
         // Obtenemos el spinner del layout
         final Spinner categorySpinner = (Spinner) v.findViewById(R.id.spinnerFilter);
@@ -104,6 +105,8 @@ public class NoticeDialogFragment extends DialogFragment {
                     listener.onDialogPositiveClick(NoticeDialogFragment.this, "nameFilter", -1);
                 } else if (idButtonSelected == dateFilter.getId()) { //Selecciona filtrado por fecha de creación
                     listener.onDialogPositiveClick(NoticeDialogFragment.this, "dateFilter", -1);
+                } else if (idButtonSelected == notesGroupedByCat.getId()) {
+                    listener.onDialogPositiveClick(NoticeDialogFragment.this, "allNotesGroupByCategory", -1);
                 } else { // En caso contrario, se ha seleccionado botón de filtrado de categoría
                     Log.d("CATEGORY","Categoria: " + cat.toString());
                     if (cat.toString() != "") {
