@@ -1,0 +1,1 @@
+- Permitir que el listado de notas muestre todas las notas agrupadas por su categoria asociada.
