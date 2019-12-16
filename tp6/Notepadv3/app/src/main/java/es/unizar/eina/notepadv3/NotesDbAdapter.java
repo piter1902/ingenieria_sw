@@ -45,10 +45,6 @@ public class NotesDbAdapter {
 
     private final Context mCtx;
 
-    public Cursor fetchAllNotesGroupByCategory() {
-        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE, KEY_BODY, KEY_CATEGORY}, null, null, KEY_CATEGORY, null, null);
-    }
-
     private static class DatabaseHelper extends SQLiteOpenHelper {
 
         DatabaseHelper(Context context) {
@@ -105,8 +101,8 @@ public class NotesDbAdapter {
      * successfully created return the new rowId for that note, otherwise return
      * a -1 to indicate failure.
      *
-     * @param title the title of the note
-     * @param body  the body of the note
+     * @param title    the title of the note
+     * @param body     the body of the note
      * @param category id of the category which note pertains to.
      * @return rowId or -1 if failed
      */
@@ -149,7 +145,7 @@ public class NotesDbAdapter {
         //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
         //       KEY_BODY}, null, null, null, null, null);
         return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
-                KEY_BODY, KEY_CATEGORY}, KEY_CATEGORY + "=" + category , null, null, null, null);
+                KEY_BODY, KEY_CATEGORY}, KEY_CATEGORY + "=" + category, null, null, null, null);
     }
 
     public Cursor fetchNotesByDate() {
@@ -158,6 +154,11 @@ public class NotesDbAdapter {
         //       KEY_BODY}, null, null, null, null, null);
         return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
                 KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_ROWID);
+    }
+
+    public Cursor fetchAllNotesGroupByCategory() {
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
+                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
     }
 
     /**

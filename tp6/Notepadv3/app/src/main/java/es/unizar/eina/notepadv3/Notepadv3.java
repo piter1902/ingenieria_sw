@@ -66,6 +66,13 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
         // Get all of the notes from the database and create the item list
         actualQuery = query;
         actualCategory = category;
+
+        // Create an array to specify the fields we want to display in the list (only TITLE)
+        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
+
+        // and an array of the fields we want to bind those fields to (in this case just text1)
+        int[] to = new int[]{R.id.text1};
+
         Cursor notesCursor = null;
         switch (query) {
             case "nameFilter":
@@ -78,22 +85,26 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 notesCursor = mDbHelper.fetchNotesByCategory(category);
                 break;
             case "allNotesGroupByCategory":
+                // En esta opción, se modifica el layout
+                from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
+                to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
                 break;
         }
 
         startManagingCursor(notesCursor);
-
-        // Create an array to specify the fields we want to display in the list (only TITLE)
-        String[] from = new String[]{NotesDbAdapter.KEY_TITLE};
-
-        // and an array of the fields we want to bind those fields to (in this case just text1)
-        int[] to = new int[]{R.id.text1};
-
-        // Now create an array adapter and set it to display using our row
-        SimpleCursorAdapter notes =
-                new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
-        mList.setAdapter(notes);
+        // Si agrupamos por categorías, se modifca layout
+        if( query == "allNotesGroupByCategory"){
+            // Now create an array adapter and set it to display using our row
+            SimpleCursorAdapter notes =
+                    new SimpleCursorAdapter(this, R.layout.notes_row_with_categories, notesCursor, from, to);
+            mList.setAdapter(notes);
+        }else{
+            // Now create an array adapter and set it to display using our row
+            SimpleCursorAdapter notes =
+                    new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
+            mList.setAdapter(notes);
+        }
     }
 
 
@@ -177,7 +188,6 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     private void filterNotes() {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialog = new NoticeDialogFragment();
-        FragmentManager prueba = getSupportFragmentManager();
         dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
 
     }
@@ -216,7 +226,6 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
      */
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-
         Toast.makeText(
                 this,
                 "Seleccionado botón OFFF",
