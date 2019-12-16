@@ -6,5 +6,6 @@ Tareas por hacer de la practica 5 de Ingenieria Sw
 
 - Reflejar los nuevos casos de uso
 - Construir clases e interfaces que aparecen en el patron Bridge. Nuevo Diagrama de clases. DONE
+- Ampliar el diagrama de paquetes con el nuevo paquete es.unizar.eina.send
 - Ampliar el diagrama de despliegue con los nodos servidor de correo y central de proveedor de telefonía. 
 - Nuevo diagrama de secuencia con el mecanismo de envio de notas que hemos implementado. DONE
