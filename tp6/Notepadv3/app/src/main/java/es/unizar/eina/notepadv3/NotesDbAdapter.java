@@ -110,7 +110,6 @@ public class NotesDbAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
-        // TODO: Establecemos la categoría inicial como la categoria 0 (se insertara al crear la BD de categorias)
         initialValues.put(KEY_CATEGORY, category);
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -157,8 +156,10 @@ public class NotesDbAdapter {
     }
 
     public Cursor fetchAllNotesGroupByCategory() {
-        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
-                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
+        //return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
+        //       KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
+        // TODO: conseguir hacer la consulta de a la BD estando en distintas BD?
+        return mDb.rawQuery("select n.title as title, n.body as body, c.title as ctitle from notes n join categories c on n.categoty = c._id order by c.title", new String[]{});
     }
 
     /**

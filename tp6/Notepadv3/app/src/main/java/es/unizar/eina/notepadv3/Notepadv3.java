@@ -86,7 +86,8 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 break;
             case "allNotesGroupByCategory":
                 // En esta opción, se modifica el layout
-                from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
+                //from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
+                from = new String[]{"ctitle", NotesDbAdapter.KEY_TITLE};
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
                 to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
                 break;

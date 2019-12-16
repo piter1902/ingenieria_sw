@@ -72,7 +72,6 @@ public class CategoryDbAdapter {
         public void onCreate(SQLiteDatabase db) {
 
             db.execSQL(DATABASE_CREATE);
-            // TODO: ejecutar aqui el insert de la categoria 0 con cadena vacia? (sin agrupar)
         }
 
         @Override
