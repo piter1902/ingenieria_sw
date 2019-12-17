@@ -3,6 +3,7 @@
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/OneDrive/Escritorio/Cosas_Juanjo/Universidad/3o/Ingenieria_Software/Practicas/ingenieria_sw/pr5/javadoc" />
     <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
+    <option name="OPTION_INCLUDE_LIBS" value="true" />
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
