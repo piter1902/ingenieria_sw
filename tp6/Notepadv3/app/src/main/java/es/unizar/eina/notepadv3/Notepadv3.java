@@ -229,7 +229,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     public void onDialogNegativeClick(DialogFragment dialog) {
         Toast.makeText(
                 this,
-                "Seleccionado botón OFFF",
+                "Seleccionado botón cancelar",
                 Toast.LENGTH_SHORT)
                 .show();
     }
