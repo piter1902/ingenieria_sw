@@ -135,7 +135,7 @@ public class CategoryDbAdapter {
      * @return true if deleted, false otherwise
      */
     public boolean deleteCategory(long rowId) {
-
+        // TODO: Definir comportamiento ante la eliminacion de una nota la cual pertenecía a la categoria borrada.
         return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
