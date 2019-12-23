@@ -108,4 +108,14 @@ public class Test {
             Log.d("TEST", "updateNote() concon parámetros (0 ,Título prueba, Cuerpo prueba) ha fallado. Causa: " + t);
         }
     }
+
+    public void test_carga(){
+        try{
+            for (int i = 0; i < 1000; i++){
+                mDbHelper.createNote("Nota carga " + i , "Cuerpo nota carga " + i);
+            }
+        }catch(Throwable t){
+            Log.d("TEST", " Fallo realizando test de carga. Causa: " + t);
+        }
+    }
 }

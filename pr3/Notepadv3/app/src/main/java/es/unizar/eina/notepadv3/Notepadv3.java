@@ -28,10 +28,11 @@ public class Notepadv3 extends AppCompatActivity {
     private static final int EDIT_ID = Menu.FIRST + 2;
     private static final int SEND_NOTE_ID = Menu.FIRST + 3;
     private static final int TEST_ID = Menu.FIRST + 4;
+    private static final int TEST_CARGA_ID = Menu.FIRST + 5;
 
     private NotesDbAdapter mDbHelper;
     private ListView mList;
-
+    private long notePosition;
 
     /**
      * Called when the activity is first created.
@@ -66,6 +67,8 @@ public class Notepadv3 extends AppCompatActivity {
         SimpleCursorAdapter notes =
                 new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
         mList.setAdapter(notes);
+        Toast.makeText(Notepadv3.this, "Posicion a mostrar " + notePosition, Toast.LENGTH_SHORT).show();
+        mList.setSelection((int)notePosition);
     }
 
 
@@ -74,6 +77,7 @@ public class Notepadv3 extends AppCompatActivity {
         boolean result = super.onCreateOptionsMenu(menu);
         menu.add(Menu.NONE, INSERT_ID, Menu.NONE, R.string.menu_insert);
         menu.add(Menu.NONE, TEST_ID, Menu.NONE, R.string.menu_test);
+        menu.add(Menu.NONE, TEST_CARGA_ID, Menu.NONE, R.string.menu_carga_test);
         return result;
     }
 
@@ -85,6 +89,10 @@ public class Notepadv3 extends AppCompatActivity {
                 return true;
             case TEST_ID:
                 ejecutar_test();
+                fillData();
+                return true;
+            case TEST_CARGA_ID:
+                ejecutar_test_carga();
                 fillData();
                 return true;
         }
@@ -105,15 +113,21 @@ public class Notepadv3 extends AppCompatActivity {
         switch (item.getItemId()) {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                int position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                notePosition = position;
                 mDbHelper.deleteNote(info.id);
                 fillData();
                 return true;
             case EDIT_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                notePosition = position;
                 editNote(info.position, info.id);
                 return true;
             case SEND_NOTE_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                notePosition = position;
                 Cursor note = mDbHelper.fetchNote(info.id);
                 String title = note.getString(
                         note.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE));
@@ -132,6 +146,8 @@ public class Notepadv3 extends AppCompatActivity {
     }
 
     private void createNote() {
+        // Se actualiza la ultima posicion de nota visitada
+        notePosition = mList.getCount();
         Intent i = new Intent(this, NoteEdit.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }
@@ -148,7 +164,16 @@ public class Notepadv3 extends AppCompatActivity {
         //Pruebas deleteNote
         test.test_deleteNote();
         Toast.makeText(Notepadv3.this, "Test ejecutados.", Toast.LENGTH_SHORT).show();
+    }
 
+    /**
+     * Método encargado de realizar las pruebas de carga
+     */
+    private void ejecutar_test_carga() {
+        Test test = new Test(this);
+        // Creamos las 1000 notas
+        test.test_carga();
+        Toast.makeText(Notepadv3.this, "Test carga ejecutados.", Toast.LENGTH_SHORT).show();
     }
 
     protected void editNote(int position, long id) {
