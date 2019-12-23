@@ -85,6 +85,7 @@ public class Notepadv3 extends AppCompatActivity {
                 return true;
             case TEST_ID:
                 ejecutar_test();
+                fillData();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -142,10 +143,10 @@ public class Notepadv3 extends AppCompatActivity {
         Test test = new Test(this);
         //Pruebas de createNote
         test.test_createNote();
-        //Pruebas deleteNote
-        test.test_deleteNote();
         //Pruebas updateNote
         test.test_updateNote();
+        //Pruebas deleteNote
+        test.test_deleteNote();
         Toast.makeText(Notepadv3.this, "Test ejecutados.", Toast.LENGTH_SHORT).show();
 
     }

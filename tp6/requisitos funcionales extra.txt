@@ -1,1 +1,3 @@
 - Permitir que el listado de notas muestre todas las notas agrupadas por su categoria asociada.
+- ¿Añadir los requisitos/precondiciones de las funciones de la P6?
+- No se espera que haya más de 1000 notas
