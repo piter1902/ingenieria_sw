@@ -118,4 +118,19 @@ public class Test {
             Log.d("TEST", " Fallo realizando test de carga. Causa: " + t);
         }
     }
+
+    public void test_sobrecarga(){
+
+        try{
+            for (int i = 1; i < 1000; i++){
+                // Asi creamos una cadena que contenga i * 10 carácteres '*'
+                String format = "%" + (i * 10) + "s";
+                String base = String.format(format,"").replace(' ', '*');
+                mDbHelper.createNote("Prueba de " + i * 10 + " caracteres" , base);
+                Log.d("TEST", "Almacenada nota de " + i * 10 + " caracteres.");
+            }
+        }catch(Throwable t){
+            Log.d("TEST", " Fallo realizando test de carga. Causa: " + t);
+        }
+    }
 }

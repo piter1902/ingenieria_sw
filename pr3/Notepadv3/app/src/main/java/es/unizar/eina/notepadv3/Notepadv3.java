@@ -29,6 +29,7 @@ public class Notepadv3 extends AppCompatActivity {
     private static final int SEND_NOTE_ID = Menu.FIRST + 3;
     private static final int TEST_ID = Menu.FIRST + 4;
     private static final int TEST_CARGA_ID = Menu.FIRST + 5;
+    private static final int TEST_SOBRECARGA_ID = Menu.FIRST + 6;
 
     private NotesDbAdapter mDbHelper;
     private ListView mList;
@@ -68,7 +69,7 @@ public class Notepadv3 extends AppCompatActivity {
                 new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
         mList.setAdapter(notes);
         Toast.makeText(Notepadv3.this, "Posicion a mostrar " + notePosition, Toast.LENGTH_SHORT).show();
-        mList.setSelection((int)notePosition);
+        mList.setSelection((int) notePosition);
     }
 
 
@@ -78,6 +79,7 @@ public class Notepadv3 extends AppCompatActivity {
         menu.add(Menu.NONE, INSERT_ID, Menu.NONE, R.string.menu_insert);
         menu.add(Menu.NONE, TEST_ID, Menu.NONE, R.string.menu_test);
         menu.add(Menu.NONE, TEST_CARGA_ID, Menu.NONE, R.string.menu_carga_test);
+        menu.add(Menu.NONE, TEST_SOBRECARGA_ID, Menu.NONE, R.string.menu_sobrecarga_test);
         return result;
     }
 
@@ -89,11 +91,12 @@ public class Notepadv3 extends AppCompatActivity {
                 return true;
             case TEST_ID:
                 ejecutar_test();
-                fillData();
                 return true;
             case TEST_CARGA_ID:
                 ejecutar_test_carga();
-                fillData();
+                return true;
+            case TEST_SOBRECARGA_ID:
+                ejecutar_test_sobrecarga();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -113,20 +116,20 @@ public class Notepadv3 extends AppCompatActivity {
         switch (item.getItemId()) {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                int position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                int position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
                 notePosition = position;
                 mDbHelper.deleteNote(info.id);
                 fillData();
                 return true;
             case EDIT_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
                 notePosition = position;
                 editNote(info.position, info.id);
                 return true;
             case SEND_NOTE_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                position = ((AdapterView.AdapterContextMenuInfo)item.getMenuInfo()).position;
+                position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
                 notePosition = position;
                 Cursor note = mDbHelper.fetchNote(info.id);
                 String title = note.getString(
@@ -174,6 +177,16 @@ public class Notepadv3 extends AppCompatActivity {
         // Creamos las 1000 notas
         test.test_carga();
         Toast.makeText(Notepadv3.this, "Test carga ejecutados.", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Método encargado de realizar las pruebas de sobrecarga
+     */
+    private void ejecutar_test_sobrecarga() {
+        Test test = new Test(this);
+        // Creamos las 1000 notas
+        test.test_sobrecarga();
+        Toast.makeText(Notepadv3.this, "Test sobrecarga ejecutados.", Toast.LENGTH_SHORT).show();
     }
 
     protected void editNote(int position, long id) {

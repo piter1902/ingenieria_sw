@@ -8,6 +8,7 @@
     <string name="menu_share_note">Share note</string>
     <string name="menu_test">Test</string>
     <string name="menu_carga_test">Test carga</string>
+    <string name="menu_sobrecarga_test">Test sobrecarga</string>
     <string name="title">Title</string>
     <string name="body">Body</string>
     <string name="confirm">Confirm</string>
