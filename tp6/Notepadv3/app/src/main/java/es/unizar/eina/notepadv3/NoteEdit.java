@@ -33,6 +33,7 @@ public class NoteEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
         setContentView(R.layout.note_edit);
@@ -82,8 +83,10 @@ public class NoteEdit extends AppCompatActivity {
 
 
             catRowID = note.getLong(note.getColumnIndexOrThrow(NotesDbAdapter.KEY_CATEGORY));
+            // TODO: esto no deberia salir null -> Parece que funciona
             Log.d(TAG, String.format("catRowID: %d", catRowID));
 
+            // TODO: comprobar que esto funciona: SPOILER -> Parece que si
             if (catRowID != null && catRowID > 0) {
                 // La nota tiene categoría -> Reordenamos el array para ponerla en primera posicion
                 Cursor c = cDHelper.fetchCategory(catRowID);
@@ -145,7 +148,7 @@ public class NoteEdit extends AppCompatActivity {
         // Comprobamos que ha seleccionado categoría
         if (cat.toString() != "") {
             Log.d(TAG, "Seleccionado categoría por defecto.");
-            catID = cDHelper.getCatID(cat.toString());
+                catID = cDHelper.getCatID(cat.toString());
         }
 
         if (mRowId == null) {

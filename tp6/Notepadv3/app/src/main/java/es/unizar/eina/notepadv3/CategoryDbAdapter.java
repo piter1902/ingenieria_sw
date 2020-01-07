@@ -37,7 +37,7 @@ public class CategoryDbAdapter {
                     + "title text not null unique);";
 
 
-    private static final String DATABASE_NAME = "dataCategory";
+        private static final String DATABASE_NAME = "dataNotes";
     private static final String DATABASE_TABLE = "categories";
     private static final int DATABASE_VERSION = 2;
 
@@ -45,6 +45,7 @@ public class CategoryDbAdapter {
 
     /**
      * Metodo que devuelve el id asociado a la categoria
+     *
      * @param cat categoria a obtener el ID
      * @return id de la categoria o -1 si no existe
      */
@@ -53,10 +54,10 @@ public class CategoryDbAdapter {
                         KEY_ROWID}, KEY_TITLE + "='" + cat + "'", null,
                 null, null, null, null);
 
-        if(c.getCount() != 0){
+        if (c.getCount() != 0) {
             c.moveToNext();
             return c.getInt(c.getColumnIndexOrThrow(KEY_ROWID));
-        }else{
+        } else {
             // Es 0 -> No existe
             return -1;
         }
@@ -70,8 +71,9 @@ public class CategoryDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+                db.execSQL(DATABASE_CREATE);
 
-            db.execSQL(DATABASE_CREATE);
+            // TODO: ejecutar aqui el insert de la categoria 0 con cadena vacia? (sin agrupar)
         }
 
         @Override
@@ -121,10 +123,10 @@ public class CategoryDbAdapter {
      * @param title the title of the note
      * @return rowId or -1 if failed
      */
-    public long createCategory(String title) throws SQLException{
+    public long createCategory(String title) throws SQLException {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
-        Log.d(TAG,"Creo tabla");
+        Log.d(TAG, "Creo tabla");
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
 
@@ -135,7 +137,7 @@ public class CategoryDbAdapter {
      * @return true if deleted, false otherwise
      */
     public boolean deleteCategory(long rowId) {
-        // TODO: Definir comportamiento ante la eliminacion de una nota la cual pertenecía a la categoria borrada.
+
         return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
@@ -164,7 +166,7 @@ public class CategoryDbAdapter {
         Cursor mCursor =
 
                 mDb.query(true, DATABASE_TABLE, new String[]{
-                                KEY_ROWID, KEY_TITLE}, KEY_ROWID + "="+ rowId, null,
+                                KEY_ROWID, KEY_TITLE}, KEY_ROWID + "=" + rowId, null,
                         null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -172,16 +174,18 @@ public class CategoryDbAdapter {
         return mCursor;
 
     }
+
     /**
      *
      */
-    public boolean exists_category(String title){
+    public boolean exists_category(String title) {
         Cursor mCursor =
                 mDb.query(true, DATABASE_TABLE, new String[]{
-                                KEY_ROWID, KEY_TITLE}, KEY_TITLE + "="  + '"' + title + '"', null,
+                                KEY_ROWID, KEY_TITLE}, KEY_TITLE + "=" + '"' + title + '"', null,
                         null, null, null, null);
-        return  mCursor.getCount() != 0;
+        return mCursor.getCount() != 0;
     }
+
     /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
@@ -191,7 +195,7 @@ public class CategoryDbAdapter {
      * @param title value to set note title to
      * @return true if the note was successfully updated, false otherwise
      */
-    public boolean updateCategory(long rowId, String title) throws SQLException{
+    public boolean updateCategory(long rowId, String title) throws SQLException {
         ContentValues args = new ContentValues();
         args.put(KEY_TITLE, title);
 

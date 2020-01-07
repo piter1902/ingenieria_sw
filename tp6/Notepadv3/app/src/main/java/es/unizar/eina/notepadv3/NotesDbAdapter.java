@@ -34,12 +34,20 @@ public class NotesDbAdapter {
     /**
      * Database creation sql statement
      */
-    private static final String DATABASE_CREATE =
-            "create table notes (_id integer primary key autoincrement, "
-                    + "title text not null, body text not null, category integer," +
-                    " CONSTRAINT FK_categories foreign key (category) references categories(id));";
 
-    private static final String DATABASE_NAME = "data";
+    private static final String DATABASE_CREATE_CATEGORIES =
+            "create table categories (_id integer primary key autoincrement, "
+                    + "title text not null unique);";
+
+    private static final String DATABASE_CREATE_NOTES = "create table notes (_id integer primary key autoincrement, "
+            + "title text not null, body text not null, category integer," +
+            " CONSTRAINT FK_categories foreign key (category) references categories(_id));";
+
+    /*
+    private static final String DATABASE_CREATE_NOTES = "create table notes (_id integer primary key autoincrement, "
+            + "title text not null, body text not null, category integer);";
+    */
+    private static final String DATABASE_NAME = "dataNotes";
     private static final String DATABASE_TABLE = "notes";
     private static final int DATABASE_VERSION = 2;
 
@@ -53,8 +61,9 @@ public class NotesDbAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-
-            db.execSQL(DATABASE_CREATE);
+            Log.d(TAG, "Me estoy creando!!!!");
+            db.execSQL(DATABASE_CREATE_CATEGORIES);
+            db.execSQL(DATABASE_CREATE_NOTES);
         }
 
         @Override
@@ -62,6 +71,7 @@ public class NotesDbAdapter {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS notes");
+            db.execSQL("DROP TABLE IF EXISTS categories");
             onCreate(db);
         }
     }
@@ -86,6 +96,7 @@ public class NotesDbAdapter {
      * @throws SQLException if the database could be neither opened or created
      */
     public NotesDbAdapter open() throws SQLException {
+        Log.d(TAG, "Me estoy abriendo.");
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;
@@ -110,6 +121,7 @@ public class NotesDbAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
+        // TODO: Establecemos la categoría inicial como la categoria 0 (se insertara al crear la BD de categorias)
         initialValues.put(KEY_CATEGORY, category);
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -156,10 +168,8 @@ public class NotesDbAdapter {
     }
 
     public Cursor fetchAllNotesGroupByCategory() {
-        //return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
-        //       KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
-        // TODO: conseguir hacer la consulta de a la BD estando en distintas BD?
-        return mDb.rawQuery("select n.title as title, n.body as body, c.title as ctitle from notes n join categories c on n.categoty = c._id order by c.title", new String[]{});
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
+                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
     }
 
     /**

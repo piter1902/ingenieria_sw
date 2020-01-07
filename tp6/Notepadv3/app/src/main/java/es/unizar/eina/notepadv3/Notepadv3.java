@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.database.Cursor;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
 
         mDbHelper = new NotesDbAdapter(this);
         mDbHelper.open();
+
         mList = (ListView) findViewById(R.id.list);
         // En un primer momento, las notas se muestran organizadas por nombre
         if (actualQuery == null || actualQuery.trim().equals(""))
@@ -86,8 +88,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 break;
             case "allNotesGroupByCategory":
                 // En esta opción, se modifica el layout
-                //from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
-                from = new String[]{"ctitle", NotesDbAdapter.KEY_TITLE};
+                from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
                 to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
                 break;
@@ -229,7 +230,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     public void onDialogNegativeClick(DialogFragment dialog) {
         Toast.makeText(
                 this,
-                "Seleccionado botón cancelar",
+                "Seleccionado botón OFFF",
                 Toast.LENGTH_SHORT)
                 .show();
     }
