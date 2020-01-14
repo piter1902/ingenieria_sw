@@ -72,8 +72,6 @@ public class CategoryDbAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
                 db.execSQL(DATABASE_CREATE);
-
-            // TODO: ejecutar aqui el insert de la categoria 0 con cadena vacia? (sin agrupar)
         }
 
         @Override
@@ -152,6 +150,19 @@ public class CategoryDbAdapter {
         //       KEY_BODY}, null, null, null, null, null);
         return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID,
                 KEY_TITLE}, null, null, null, null, KEY_TITLE);
+    }
+
+    /**
+     * Return a Cursor over the list of all notes in the database where its _id is greater than 0.
+     *
+     * @return Cursor over all notes that pass the condition
+     */
+    public Cursor fetchAllCategoriesVisible() {
+
+        //return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
+        //       KEY_BODY}, null, null, null, null, null);
+        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID,
+                KEY_TITLE}, CategoryDbAdapter.KEY_ROWID + " > 0", null, null, null, KEY_TITLE);
     }
 
     /**

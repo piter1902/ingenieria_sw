@@ -86,7 +86,7 @@ public class NoteEdit extends AppCompatActivity {
 
             Log.d(TAG, String.format("catRowID: %d", catRowID));
 
-            if (catRowID != null && catRowID > 0) {
+            if (catRowID != null) {
                 // La nota tiene categoría -> Reordenamos el array para ponerla en primera posicion
                 Cursor c = cDHelper.fetchCategory(catRowID);
                 // En caso contrario no se hace nada
@@ -97,9 +97,6 @@ public class NoteEdit extends AppCompatActivity {
                     datos.remove(cat_name);
                     datos.add(0, cat_name);
                 }
-            } else {
-                // Caso de que nota no tiene categoría. Si queremos que así permanezca, se le tiene que dar la opción.
-                datos.add(0, "");
             }
 
 
@@ -117,8 +114,6 @@ public class NoteEdit extends AppCompatActivity {
                     note.getColumnIndexOrThrow(NotesDbAdapter.KEY_ROWID)));
         } else { //En caso de que sea nulo, es que se está creando la nota.
             mIdText.setText("***");
-            // Si estamos creando nota, la categoría por defecto va a ser la 0, cuyo title=""
-            datos.add(0, "");
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, datos);
 

@@ -64,6 +64,12 @@ public class NotesDbAdapter {
             Log.d(TAG, "Me estoy creando!!!!");
             db.execSQL(DATABASE_CREATE_CATEGORIES);
             db.execSQL(DATABASE_CREATE_NOTES);
+            // Creacion de la categoría 0 -> Sin Categoria
+            ContentValues initialValues = new ContentValues();
+            initialValues.put(KEY_ROWID, 0);
+            initialValues.put(KEY_TITLE, "Sin Categoria");
+            Log.d(TAG, "Insertando valor predefinido {0, Sin Categoria}");
+            db.insert(CategoryDbAdapter.DATABASE_TABLE, null, initialValues);
         }
 
         @Override
@@ -121,7 +127,6 @@ public class NotesDbAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_TITLE, title);
         initialValues.put(KEY_BODY, body);
-        // TODO: Establecemos la categoría inicial como la categoria 0 (se insertara al crear la BD de categorias)
         initialValues.put(KEY_CATEGORY, category);
 
         return mDb.insert(DATABASE_TABLE, null, initialValues);
@@ -171,8 +176,6 @@ public class NotesDbAdapter {
         String rawQuery = "SELECT N." + NotesDbAdapter.KEY_ROWID + ", C." + CategoryDbAdapter.KEY_TITLE + " AS catTitle, N." + NotesDbAdapter.KEY_TITLE + " AS notesTitle FROM " +
                 NotesDbAdapter.DATABASE_TABLE + " N INNER JOIN " + CategoryDbAdapter.DATABASE_TABLE + " C ON N." + NotesDbAdapter.KEY_CATEGORY + " = C."+
                 CategoryDbAdapter.KEY_ROWID + " ORDER BY C." + CategoryDbAdapter.KEY_TITLE;
-        //TODO: quitar esto
-        Log.d(TAG, rawQuery);
         return mDb.rawQuery(rawQuery, null);
     }
 
