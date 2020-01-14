@@ -155,7 +155,7 @@ public class CategoryDbAdapter {
     /**
      * Return a Cursor over the list of all notes in the database where its _id is greater than 0.
      *
-     * @return Cursor over all notes that pass the condition
+     * @return Cursor over all notes that satisfies the condition
      */
     public Cursor fetchAllCategoriesVisible() {
 
