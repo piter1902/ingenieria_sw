@@ -40,6 +40,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     private ListView mList;
     private String actualQuery;
     private long actualCategory;
+    private long notePosition;
 
 
     /**
@@ -88,7 +89,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 break;
             case "allNotesGroupByCategory":
                 // En esta opción, se modifica el layout
-                from = new String[]{NotesDbAdapter.KEY_CATEGORY,NotesDbAdapter.KEY_TITLE};
+                from = new String[]{"catTitle","noteTitle"};
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
                 to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
                 break;
@@ -107,6 +108,8 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                     new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
             mList.setAdapter(notes);
         }
+        // Actualizamos la posición a mostrar
+        mList.setSelection((int) notePosition);
     }
 
 
@@ -151,15 +154,21 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
         switch (item.getItemId()) {
             case DELETE_ID:
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                int position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
+                notePosition = position;
                 mDbHelper.deleteNote(info.id);
                 fillData(actualQuery, actualCategory);
                 return true;
             case EDIT_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
+                notePosition = position;
                 editNote(info.position, info.id);
                 return true;
             case SEND_NOTE_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
+                notePosition = position;
                 Cursor note = mDbHelper.fetchNote(info.id);
                 String title = note.getString(
                         note.getColumnIndexOrThrow(NotesDbAdapter.KEY_TITLE));
@@ -177,6 +186,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     }
 
     private void createNote() {
+        notePosition = mList.getCount();
         Intent i = new Intent(this, NoteEdit.class);
         startActivityForResult(i, ACTIVITY_CREATE);
     }

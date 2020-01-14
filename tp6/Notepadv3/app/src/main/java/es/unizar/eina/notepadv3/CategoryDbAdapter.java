@@ -37,8 +37,8 @@ public class CategoryDbAdapter {
                     + "title text not null unique);";
 
 
-        private static final String DATABASE_NAME = "dataNotes";
-    private static final String DATABASE_TABLE = "categories";
+    private static final String DATABASE_NAME = "dataNotes";
+    public static final String DATABASE_TABLE = "categories";
     private static final int DATABASE_VERSION = 2;
 
     private final Context mCtx;

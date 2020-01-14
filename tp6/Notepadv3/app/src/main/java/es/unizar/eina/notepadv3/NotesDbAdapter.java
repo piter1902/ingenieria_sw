@@ -168,8 +168,10 @@ public class NotesDbAdapter {
     }
 
     public Cursor fetchAllNotesGroupByCategory() {
-        return mDb.query(DATABASE_TABLE, new String[]{KEY_ROWID, KEY_TITLE,
-                KEY_BODY, KEY_CATEGORY}, null, null, null, null, KEY_CATEGORY);
+        String rawQuery = "SELECT " + CategoryDbAdapter.KEY_TITLE + " AS catTitle, " + NotesDbAdapter.KEY_TITLE + " AS notesTitle FROM " +
+                NotesDbAdapter.DATABASE_TABLE + " INNER JOIN " + CategoryDbAdapter.DATABASE_TABLE + " ON " + NotesDbAdapter.KEY_CATEGORY + "="+
+                CategoryDbAdapter.KEY_ROWID + " ORDER BY " + CategoryDbAdapter.KEY_TITLE;
+        return mDb.rawQuery(rawQuery, null);
     }
 
     /**
