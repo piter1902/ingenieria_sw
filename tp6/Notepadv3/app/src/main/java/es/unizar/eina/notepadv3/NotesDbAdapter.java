@@ -36,7 +36,7 @@ public class NotesDbAdapter {
      */
 
     private static final String DATABASE_CREATE_CATEGORIES =
-            "create table categories (_id integer primary key autoincrement, "
+            "create table categories ( _id integer primary key autoincrement, "
                     + "title text not null unique);";
 
     private static final String DATABASE_CREATE_NOTES = "create table notes (_id integer primary key autoincrement, "
@@ -168,9 +168,11 @@ public class NotesDbAdapter {
     }
 
     public Cursor fetchAllNotesGroupByCategory() {
-        String rawQuery = "SELECT " + CategoryDbAdapter.KEY_TITLE + " AS catTitle, " + NotesDbAdapter.KEY_TITLE + " AS notesTitle FROM " +
-                NotesDbAdapter.DATABASE_TABLE + " INNER JOIN " + CategoryDbAdapter.DATABASE_TABLE + " ON " + NotesDbAdapter.KEY_CATEGORY + "="+
-                CategoryDbAdapter.KEY_ROWID + " ORDER BY " + CategoryDbAdapter.KEY_TITLE;
+        String rawQuery = "SELECT N." + NotesDbAdapter.KEY_ROWID + ", C." + CategoryDbAdapter.KEY_TITLE + " AS catTitle, N." + NotesDbAdapter.KEY_TITLE + " AS notesTitle FROM " +
+                NotesDbAdapter.DATABASE_TABLE + " N INNER JOIN " + CategoryDbAdapter.DATABASE_TABLE + " C ON N." + NotesDbAdapter.KEY_CATEGORY + " = C."+
+                CategoryDbAdapter.KEY_ROWID + " ORDER BY C." + CategoryDbAdapter.KEY_TITLE;
+        //TODO: quitar esto
+        Log.d(TAG, rawQuery);
         return mDb.rawQuery(rawQuery, null);
     }
 
