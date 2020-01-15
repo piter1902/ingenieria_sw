@@ -29,7 +29,6 @@ public class CategoryEdit extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("POLLA","AQUI LLEGO");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_edit );
         mDbHelper = new CategoryDbAdapter(this);
@@ -43,7 +42,7 @@ public class CategoryEdit extends AppCompatActivity {
 
     private void fillData() {
         // Get all of the notes from the database and create the item list
-        Cursor categoryCursor = mDbHelper.fetchAllCategories();
+        Cursor categoryCursor = mDbHelper.fetchAllCategoriesVisible();
         startManagingCursor(categoryCursor);
 
         // Create an array to specify the fields we want to display in the list (only TITLE)

@@ -86,8 +86,6 @@ public class NoticeDialogFragment extends DialogFragment {
 
         // Obtenemos la lista de categorías almacenadas en la base de datos
         List<String> datos = fetchCategories();
-        // En primer lugar de la lista desplegable, se sitúa la lista vacía.
-        datos.add(0, "");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getActivity(), android.R.layout.simple_spinner_item, datos);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
