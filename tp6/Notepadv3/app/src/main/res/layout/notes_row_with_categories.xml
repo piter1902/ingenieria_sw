@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:weightSum="2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-        <TextView
-            android:id="@+id/textViewCatRow1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#88FF0000"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-        <TextView
-            android:id="@+id/textViewCatRow2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="#8800FF00"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+    <TextView
+        android:id="@+id/textViewCatRow1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="3dip" />
+    <View
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:background="@android:color/background_dark"></View>
+
+    <TextView
+        android:id="@+id/textViewCatRow2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="3dip" />
 </LinearLayout>

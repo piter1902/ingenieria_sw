@@ -89,24 +89,20 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 break;
             case "allNotesGroupByCategory":
                 // En esta opción, se modifica el layout
-                /*from = new String[]{"catTitle", "notesTitle"};
-                 *notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
-                 *to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
-                 *break;
-                 */
+                from = new String[]{"catTitle", "notesTitle"};
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
-
+                to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
+                break;
         }
 
         startManagingCursor(notesCursor);
         // Si agrupamos por categorías, se modifca layout
         if (query == "allNotesGroupByCategory") {
             // Now create an array adapter and set it to display using our row
-           TodoCursorAdapter notes = new TodoCursorAdapter(this, notesCursor);
-/*
+
             SimpleCursorAdapter notes =
                     new SimpleCursorAdapter(this, R.layout.notes_row_with_categories, notesCursor, from, to);
-*/
+
 
             mList.setAdapter(notes);
         } else {
