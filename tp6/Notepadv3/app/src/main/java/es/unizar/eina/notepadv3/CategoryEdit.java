@@ -86,17 +86,22 @@ public class CategoryEdit extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case DELETE_ID:
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-                mDbHelper.deleteCategory(info.id);
-                fillData();
+                deleteCategory(item);
                 return true;
             case EDIT_ID:
-                info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 editCategory(info.position, info.id);
                 return true;
         }
         return super.onContextItemSelected(item);
     }
+
+    private void deleteCategory(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        mDbHelper.deleteCategory(info.id);
+        fillData();
+    }
+
 
     protected void editCategory(int position, long id) {
         Intent i = new Intent(this, CategoryCreate.class);

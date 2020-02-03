@@ -89,20 +89,27 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 break;
             case "allNotesGroupByCategory":
                 // En esta opción, se modifica el layout
-                from = new String[]{"catTitle","notesTitle"};
+                /*from = new String[]{"catTitle", "notesTitle"};
+                 *notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
+                 *to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
+                 *break;
+                 */
                 notesCursor = mDbHelper.fetchAllNotesGroupByCategory();
-                to = new int[]{R.id.textViewCatRow1, R.id.textViewCatRow2};
-                break;
+
         }
 
         startManagingCursor(notesCursor);
         // Si agrupamos por categorías, se modifca layout
-        if( query == "allNotesGroupByCategory"){
+        if (query == "allNotesGroupByCategory") {
             // Now create an array adapter and set it to display using our row
+           TodoCursorAdapter notes = new TodoCursorAdapter(this, notesCursor);
+/*
             SimpleCursorAdapter notes =
                     new SimpleCursorAdapter(this, R.layout.notes_row_with_categories, notesCursor, from, to);
+*/
+
             mList.setAdapter(notes);
-        }else{
+        } else {
             // Now create an array adapter and set it to display using our row
             SimpleCursorAdapter notes =
                     new SimpleCursorAdapter(this, R.layout.notes_row, notesCursor, from, to);
@@ -163,7 +170,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 position = ((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position;
                 notePosition = position;
-                editNote(info.position, info.id);
+                editNote(info.id);
                 return true;
             case SEND_NOTE_ID:
                 info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -204,7 +211,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
 
     }
 
-    protected void editNote(int position, long id) {
+    protected void editNote(long id) {
         Intent i = new Intent(this, NoteEdit.class);
         i.putExtra(NotesDbAdapter.KEY_ROWID, id);
         startActivityForResult(i, ACTIVITY_EDIT);
@@ -240,7 +247,7 @@ public class Notepadv3 extends AppCompatActivity implements NoticeDialogFragment
     public void onDialogNegativeClick(DialogFragment dialog) {
         Toast.makeText(
                 this,
-                "Seleccionado botón OFFF",
+                "Operacion cancelada",
                 Toast.LENGTH_SHORT)
                 .show();
     }

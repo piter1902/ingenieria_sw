@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:checked="true"
-            android:text="Filtrar por nombre" />
+            android:text="Ordenar por nombre" />
 
         <RadioButton
             android:id="@+id/categoryFilter"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:checked="false"
-            android:text="Filtrar por fecha de creación" />
+            android:text="Ordenar por ID" />
 
         <RadioButton
             android:id="@+id/notesGroupedByCat"
